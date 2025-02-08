@@ -27,6 +27,33 @@
                 </div>
             </div>
         </nav>
+        <!-- Registration Form -->
+        <div>
+            <h2>Register</h2>
+            <form id="registerForm">
+                <input type="email" id="registerEmail" placeholder="Email" required>
+                <input type="password" id="registerPassword" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+
+        <!-- Login Form -->
+        <div>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
+        <!-- Activity Grid -->
+        <div class="bg-white shadow-sm rounded-lg p-6 overflow-x-auto">
+            <div id="grid" class="min-w-full">
+                <!-- Grid will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
 
         <!-- Authentication Container -->
         <div id="loginForm" class="max-w-md mx-auto mt-10 px-4 sm:px-6 lg:px-8">
@@ -73,8 +100,50 @@
         </div>
     </div>
     <script src="js/firebase-config.js"></script>
-    <script>
-       
+    <script type="module"> 
+       // Register User
+       document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    // Registered successfully
+                    const user = userCredential.user;
+                    console.log('User registered:', user);
+                })
+                .catch((error) => {
+                    console.error('Error registering user:', error);
+                });
+        });
+
+        // Login User
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    // Logged in successfully
+                    const user = userCredential.user;
+                    console.log('User logged in:', user);
+                })
+                .catch((error) => {
+                    console.error('Error logging in user:', error);
+                });
+        });
+
+        // Logout User
+        function logout() {
+            signOut(auth).then(() => {
+                console.log('User logged out');
+            }).catch((error) => {
+                console.error('Error logging out:', error);
+            });
+        }
+
         let currentUser = null;
         let activities = [
             "Body Exercising",
